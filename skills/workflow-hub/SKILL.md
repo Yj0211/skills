@@ -64,6 +64,7 @@ go version 2>/dev/null
 1. **环境识别**  
    - 使用上面脚本定位仓库角色。若为附加工作树，记录主工作树路径与当前分支；若工作树异常，立即汇报。  
    - 记录当前分支与工作区脏/洁净状态。
+   - 若本会话已缓存前述信息（参见 `workflow-git` 中的缓存建议），且分支/工作树未变化，可直接引用缓存结果，仅在用户要求“重新检测”或自动检测到分支切换时重新执行命令。
 
 2. **意图拆解**  
    - 结合触发词将需求映射到子技能：  
@@ -72,6 +73,8 @@ go version 2>/dev/null
      | “保存进度”“备份代码”“推分支” | `workflow-git`（工作树分支→origin） |
      | “发布代码”“合并主分支”“推送服务器” | `workflow-git`（轻量 PR 发布） |
      | “开始新任务”“同步 main”“收尾清理” | `workflow-git`（自动化快捷命令） |
+     | “写提交信息”“生成 commit message” | `workflow-review-commit`（Conventional Commits） |
+     | “代码审查”“review 本次改动” | `workflow-review-commit`（结构化审查模板） |
      | “提交前检查”“质量检查”“跑测试” | `workflow-quality-release`（质量+测试） |
      | “构建”“部署”“上线” | `workflow-quality-release`（构建/部署章节） |
 
@@ -84,17 +87,22 @@ go version 2>/dev/null
    - 模板：“结论（通过/未完成/阻塞） + 关键命令与结果 + 下一步”。  
    - 对未执行的步骤说明原因（例如依赖脚本缺失）及补救计划。
 
-## 模块化加载规则
+## 轻量加载与模块化规则
 
-- Git 相关动作必须先加载 `../workflow-git/SKILL.md`，严格执行 worktree 流程与危险操作约束。
-- 代码质量、测试、构建、部署全部复用 `../workflow-quality-release/SKILL.md` 的清单与命令模板。
-- 仅执行环境诊断时，也应引用 `workflow-git` 的识别流程确保仓库角色判断一致。
+1. **懒加载优先**：根据意图拆解的结果，只在确实需要执行某模块动作时才加载对应 Skill；例如单纯查询 “当前分支状态” 时，仅引用 `workflow-git` 的速查表即可，不必全量复述整份文档。
+2. **速查通道**：`workflow-git` 顶部的 `wt:new/wt:push/...` 快捷指令可独立引用；若操作符合速查表内容，可直接贴命令并说明出处。
+3. **只读场景例外**：当用户明确为“仅 review / 仅说明流程 / 只读 diff”且不会执行 Git 命令时，可跳过 `workflow-git`，改为引用 `workflow-review-commit` 或相关指南。
+4. **质量/构建模块**：只有在要执行 lint/测试/构建/部署命令时才加载 `workflow-quality-release`，否则保持引用级别说明。
+5. **提交信息/代码审查**：当用户请求写 commit message 或做 review，加载 `workflow-review-commit`；其他任务不必加载。
+6. **环境诊断**：若任务仅为“确认环境/工具版本”，引用当前章节即可，无需进入 Git 流程；检测完成后如任务继续触发 Git 操作，再按需加载子 Skill。
 
 ## 触发词与预期响应
 
 | 触发词 | 答复要点 |
 | --- | --- |
 | “提交代码” | 询问是保存进度（工作树分支→origin）还是创建 PR 后发布（分支→PR→`$BASE_BRANCH`）。 |
+| “写提交信息 / commit message” | 路由到 `workflow-review-commit`，按 Conventional Commits 模板输出。 |
+| “代码审查 / review” | 路由到 `workflow-review-commit`，按概览 + 问题表格输出。 |
 | “保存进度” | 解释将推送到 `origin/<branch>`，不直接改动 `$BASE_BRANCH`。 |
 | “开始新任务 / 同步 main / 收尾” | 直接套用 `workflow-git` 中 `wt:new`、`wt:sync`、`wt:done` 模板执行。 |
 | “发布/上线/推送服务器” | 列出完整步骤（推分支 → 建 PR → 最小检查 → squash 合并 → 同步 `origin/$BASE_BRANCH`）。 |

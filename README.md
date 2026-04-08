@@ -8,6 +8,7 @@
 | --- | --- | --- |
 | workflow-hub | 全局枢纽：负责环境识别、意图拆解与子流程编排。 | `skills/workflow-hub/SKILL.md` |
 | workflow-git | 原生 Git worktree 工作流：覆盖并行开发、分支进度保存与主线发布。 | `skills/workflow-git/SKILL.md` |
+| workflow-review-commit | 提交信息生成 + 代码审查模板：统一 Conventional Commits 与评审输出结构。 | `skills/workflow-review-commit/SKILL.md` |
 | workflow-quality-release | 代码质量 + 测试 + 构建部署一体化流程。 | `skills/workflow-quality-release/SKILL.md` |
 
 ## 使用方式
