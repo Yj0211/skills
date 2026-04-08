@@ -1,39 +1,23 @@
-# skills
+# Workflow Skills Collection
 
-#### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+本仓库遵循 Anthropics 官方技能仓库结构，将所有技能放在 `skills/` 目录下，方便集中维护与分发。各技能均独立包含 `SKILL.md` 与说明，可与 Codex/Claude `skills` 语义兼容。
 
-#### 软件架构
-软件架构说明
+## 技能一览
 
+| 技能名 | 说明 | 路径 |
+| --- | --- | --- |
+| workflow-hub | 全局枢纽：负责环境识别、意图拆解与子流程编排。 | `skills/workflow-hub/SKILL.md` |
+| workflow-git | 三层 Git 工作流：覆盖工作区、cache、主项目的提交与发布动作。 | `skills/workflow-git/SKILL.md` |
+| workflow-quality-release | 代码质量 + 测试 + 构建部署一体化流程。 | `skills/workflow-quality-release/SKILL.md` |
 
-#### 安装教程
+## 使用方式
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1. 将本仓库克隆或下载到任意可访问路径，例如 `~/skills-repo`。
+2. 在 Codex/Claude 中将 `skills/` 目录加入 `SKILLS_PATH` 或对应加载配置。
+3. 当需要更新规范时，只改动单个技能目录即可，通过 Git 统一管理变更。
 
-#### 使用说明
+## 约定
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+- 所有技能遵循“简体中文、先结论后证据”输出约定。
+- 技能间引用只使用相对路径（例如 `../workflow-git/SKILL.md`），以便在仓库内移动或复用。
+- 若需添加新技能，请在 `skills/` 下新建文件夹，包含 `SKILL.md` 与必要资源，并更新上表。
